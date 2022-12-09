@@ -19,14 +19,23 @@ typedef struct List {
 
 
 void init_list(List *list) {
+  if (list == NULL) {
+    printf("init_list Error");
+    return;
+  }
+
   list->sentinel = malloc(sizeof(Node));
+  if (list->sentinel == NULL) {
+    printf("init_list Error");
+    return;
+  }
+
   list->sentinel->prev = list->sentinel;
   list->sentinel->next = list->sentinel;
 }
 
-
 void print(List *list) {
-  if (list->sentinel == NULL){
+  if (list == NULL || list->sentinel == NULL){
     printf("print Error\n");
     return;
   }
@@ -47,15 +56,24 @@ void print(List *list) {
 
 
 void add_val(List *list, char* data) {
-  if (list->sentinel == NULL){
-    printf("add Error\n");
+  if (list == NULL || list->sentinel == NULL) {
+    printf("add Error");
     return;
   }
+
   Node *new_n = malloc(sizeof(Node));
+  if (new_n == NULL) {
+    printf("add Error");
+    return;
+  }
 
   new_n->data = malloc(strlen(data) + 1);
+  if (new_n->data == NULL) {
+    printf("add Error");
+    free(new_n);
+    return;
+  }
   strcpy(new_n->data, data);
-
   new_n->prev = list->sentinel->prev;
   new_n->next = list->sentinel;
 
@@ -77,7 +95,7 @@ void delete_val(List *list, char* value) {
     if (strcmp(curr_n->data, value) == 0) {
       prev_n->next = curr_n->next;
       curr_n->next->prev = prev_n;
-
+      free(curr_n->data);
       free(curr_n);
       flag = 1;
       curr_n = prev_n->next;
@@ -95,6 +113,11 @@ void delete_val(List *list, char* value) {
 
 
 void search_val(List *list, char* value) {
+  if (list == NULL || list->sentinel == NULL){
+    printf("search Error\n");
+    return;
+  }
+
   Node *curr_n = list->sentinel->next;
 
   while (curr_n != list->sentinel) {
@@ -110,6 +133,11 @@ void search_val(List *list, char* value) {
 
 
 void non_repeated(List *list) {
+  if (list == NULL || list->sentinel == NULL){
+    printf("non_repeated Error\n");
+    return;
+  }
+
   Node *curr_n = list->sentinel->next;
   Node *prev_n = list->sentinel;
   char* values[MAX_VALUES];
@@ -140,6 +168,10 @@ void non_repeated(List *list) {
 
 
 void merge(List *list) {
+  if (list == NULL || list->sentinel == NULL){
+    printf("merge Error\n");
+    return;
+  }
   add_val(list, "one");
   add_val(list, "two");
   add_val(list, "three");
@@ -147,20 +179,23 @@ void merge(List *list) {
 
 
 void clean(List *list) {
-  Node *curr_n = list->sentinel->next;
-  Node *prev_n = list->sentinel;
-
-  while (curr_n != list->sentinel) {
-    prev_n->next = curr_n->next;
-    curr_n->next->prev = prev_n;
-
-    free(curr_n);
-    curr_n = prev_n->next;
+  if (list == NULL || list->sentinel == NULL) {
+    printf("clean Error\n");
+    return;
   }
 
-  list->sentinel->prev = list->sentinel;
-  list->sentinel->next = list->sentinel;
-  free(list->sentinel);  
+  Node *curr = list->sentinel->next;
+  Node *next;
+
+  while (curr != list->sentinel) {
+    next = curr->next;
+    free(curr->data);
+    free(curr);
+    curr = next;
+  }
+
+  free(list->sentinel);
+  list->sentinel = NULL;
 }
 
 
@@ -179,8 +214,7 @@ int main (int argc, char *argv[])
   }
 
   for (int j = 0; j < i; j++) {
-    char *newline = strchr(lines[j], '\n');
-    *newline = '\0';
+    lines[j][strcspn(lines[j], "\n")] = 0;
 
     char *option = strtok(lines[j], " ");
     char *value = strtok(NULL, " ");
@@ -211,5 +245,6 @@ int main (int argc, char *argv[])
     }
     free(lines[j]);
   }
+  free(L);
   return 0;
 }

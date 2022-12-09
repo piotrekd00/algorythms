@@ -245,6 +245,9 @@ int main (int argc, char *argv[])
     }
     free(lines[j]);
   }
+  if(L != NULL && L->sentinel != NULL){
+    clean(L);
+  }
   free(L);
   return 0;
 }

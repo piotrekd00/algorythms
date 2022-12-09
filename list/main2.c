@@ -155,7 +155,7 @@ void non_repeated(List *list) {
     if (seen == 1) {
       prev_n->next = curr_n->next;
       curr_n->next->prev = prev_n;
-
+      free(curr_n->data);
       free(curr_n);
       curr_n = prev_n->next;
     } else {

@@ -57,19 +57,19 @@ void print(List *list) {
 
 void add_val(List *list, char* data) {
   if (list == NULL || list->sentinel == NULL) {
-    printf("add Error");
+    printf("add Error\n");
     return;
   }
 
   Node *new_n = malloc(sizeof(Node));
   if (new_n == NULL) {
-    printf("add Error");
+    printf("add Error\n");
     return;
   }
 
   new_n->data = malloc(strlen(data) + 1);
   if (new_n->data == NULL) {
-    printf("add Error");
+    printf("add Error\n");
     free(new_n);
     return;
   }
@@ -202,7 +202,7 @@ void clean(List *list) {
 int main (int argc, char *argv[])
 {
   List *L;
-  L = (List *)malloc(sizeof(List));
+  L = malloc(sizeof(List));
   char *lines[MAX_LINE_LENGTH];
   char line[MAX_LINE_LENGTH];
   int i = 0;

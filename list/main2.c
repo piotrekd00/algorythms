@@ -20,13 +20,13 @@ typedef struct List {
 
 void init_list(List *list) {
   if (list == NULL) {
-    printf("init_list Error");
+    printf("Error init_list\n");
     return;
   }
 
   list->sentinel = malloc(sizeof(Node));
   if (list->sentinel == NULL) {
-    printf("init_list Error");
+    printf("Error init_list\n");
     return;
   }
 
@@ -36,7 +36,7 @@ void init_list(List *list) {
 
 void print(List *list) {
   if (list == NULL || list->sentinel == NULL){
-    printf("print Error\n");
+    printf("Error print\n");
     return;
   }
   printf("[");
@@ -57,19 +57,19 @@ void print(List *list) {
 
 void add_val(List *list, char* data) {
   if (list == NULL || list->sentinel == NULL) {
-    printf("add Error\n");
+    printf("Error add\n");
     return;
   }
 
   Node *new_n = malloc(sizeof(Node));
   if (new_n == NULL) {
-    printf("add Error\n");
+    printf("Error add\n");
     return;
   }
 
   new_n->data = malloc(strlen(data) + 1);
   if (new_n->data == NULL) {
-    printf("add Error\n");
+    printf("Error add\n");
     free(new_n);
     return;
   }
@@ -84,7 +84,7 @@ void add_val(List *list, char* data) {
 
 void delete_val(List *list, char* value) {
   if (list->sentinel == NULL){
-    printf("remove Error\n");
+    printf("Error remove\n");
     return;
   }
   int flag = 0;
@@ -106,7 +106,7 @@ void delete_val(List *list, char* value) {
     }
   }
   if (flag == 0){
-    printf("remove Error\n");
+    printf("Error remove\n");
     return;
   }
 }
@@ -114,7 +114,7 @@ void delete_val(List *list, char* value) {
 
 void search_val(List *list, char* value) {
   if (list == NULL || list->sentinel == NULL){
-    printf("search Error\n");
+    printf("Error search\n");
     return;
   }
 
@@ -134,7 +134,7 @@ void search_val(List *list, char* value) {
 
 void non_repeated(List *list) {
   if (list == NULL || list->sentinel == NULL){
-    printf("non_repeated Error\n");
+    printf("Error non_repeated\n");
     return;
   }
 
@@ -169,7 +169,7 @@ void non_repeated(List *list) {
 
 void merge(List *list) {
   if (list == NULL || list->sentinel == NULL){
-    printf("merge Error\n");
+    printf("Error merge\n");
     return;
   }
   add_val(list, "one");
@@ -180,7 +180,7 @@ void merge(List *list) {
 
 void clean(List *list) {
   if (list == NULL || list->sentinel == NULL) {
-    printf("clean Error\n");
+    printf("Error clean\n");
     return;
   }
 

@@ -16,11 +16,19 @@ typedef struct BST{
 
 void init(BST **tree){
   *tree = malloc(sizeof(BST));
+  if (tree == NULL){
+    printf("Error init_tree\n");
+  }
+  (*tree)->root = malloc(sizeof(Node));
+  (*tree)->root = NULL;
   (*tree)->count = 0;
 }
 
 Node *new_node(int data){
   Node *n_node = malloc(sizeof(Node));
+  if (n_node == NULL){
+    printf("Error insert\n");
+  }
   n_node->value = data;
   n_node->left = NULL;
   n_node->right = NULL;
@@ -50,7 +58,10 @@ Node *successor(Node *node) {
 }
 
 Node *delete_node(BST *tree, Node *root, int data) {
-  if (root == NULL) return root;
+  if (root == NULL){
+    printf("Error delete\n");
+    return root;
+  }
   if (data < root->value) {
     root->left = delete_node(tree, root->left, data);
   } else if (data > root->value) {
@@ -135,9 +146,17 @@ void search(Node *root, int data) {
   }
 }
 
+void cleanup(BST *tree, Node *root) {
+  if (root == NULL) return;
+  cleanup(tree, root->left);
+  cleanup(tree, root->right);
+  free(root);
+  tree->count--;
+}
+
 int main (int argc, char *argv[])
 {
-  BST *tree;
+  BST *tree = NULL;
   char *lines[MAX_LINE_LENGTH];
   char line[MAX_LINE_LENGTH];
   int i = 0;
@@ -160,24 +179,58 @@ int main (int argc, char *argv[])
       init(&tree);
     }
     else if (strcmp(option, "insert")==0){
-      insert_node(tree, &tree->root, value);
+      if (tree != NULL){
+        insert_node(tree, &tree->root, value);
+      }
+      else{
+        printf("Error insert\n");
+      }
     }
     else if (strcmp(option, "search")==0){
-      search(tree->root, value);
+      if (tree != NULL){
+        search(tree->root, value);
+      }
+      else{
+        printf("Error search\n");
+      }
     }
     else if (strcmp(option, "delete")==0){
-      delete_node(tree, tree->root, value);
+      if (tree != NULL){
+        delete_node(tree, tree->root, value);
+      }
+      else{
+        printf("Error delete\n");
+      }
     }
     else if (strcmp(option, "in_order")==0){
-      print_inorder(tree, tree->root);
+      if (tree != NULL){
+        print_inorder(tree, tree->root);
+      }
+      else{
+        printf("Error in_order\n");
+      }
     }
     else if (strcmp(option, "pre_order")==0){
-      print_preorder(tree, tree->root);
+      if (tree != NULL){
+        print_preorder(tree, tree->root);
+      }
+      else{
+        printf("Error pre_order\n");
+      }
     }
     else if (strcmp(option, "post_order")==0){
-      print_postorder(tree, tree->root);
+      if (tree != NULL){
+        print_postorder(tree, tree->root);
+      }
+      else{
+        printf("Error post_order\n");
+      }
     }
     free(lines[j]);
+  }
+  if (tree != NULL){
+    cleanup(tree, tree->root);
+    free(tree);
   }
   return 0;
 }

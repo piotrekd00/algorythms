@@ -20,10 +20,7 @@ void init(BST **tree){
     printf("Error init_tree\n");
     return;
   }
-<<<<<<< HEAD
   memset(*tree, 0, sizeof(BST));
-=======
->>>>>>> fa3716857871a1852560528038a0c3b81f4e040a
   (*tree)->count = 0;
 }
 

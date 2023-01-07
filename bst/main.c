@@ -19,8 +19,6 @@ void init(BST **tree){
   if (tree == NULL){
     printf("Error init_tree\n");
   }
-  (*tree)->root = malloc(sizeof(Node));
-  (*tree)->root = NULL;
   (*tree)->count = 0;
 }
 

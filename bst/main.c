@@ -95,6 +95,7 @@ void print_inorder(BST *tree, Node *root) {
     printf(" ");
   } else {
     printf("\n");
+    count = 0;
   }
   print_inorder(tree, root->right);
 }
@@ -109,6 +110,7 @@ void print_preorder(BST *tree, Node *root) {
     printf(" ");
   } else {
     printf("\n");
+    count = 0;
   }
   print_preorder(tree, root->left);
   print_preorder(tree, root->right);
@@ -125,6 +127,7 @@ void print_postorder(BST *tree, Node *root) {
     printf(" ");
   } else {
     printf("\n");
+    count = 0;
   }
 }
 

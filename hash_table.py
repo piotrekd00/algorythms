@@ -14,10 +14,10 @@ class HashTable:
         binary = ''.join(bin_list)
         def h1(k):
             return (k % self.size) 
-        def h2(k, i):
-            return (i + (k % (self.size-2)))
+        def h2(k):
+            return (((k + 2) % (self.size-2)))
         def h(k, i):
-            return (h1(h2(k, i))) 
+            return (h1(k) + (i * h2(k))) % self.size 
         return h(int(binary, 2), i)
 
 
@@ -51,6 +51,8 @@ class HashTable:
             #print(i, index)
             i += 1
             index = self.hash_string(key, i)
+            if i >= self.size:
+                break
         self.table[index] = value
 
 

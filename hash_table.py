@@ -12,7 +12,13 @@ class HashTable:
         for char in string:
             bin_list += f'{ord(char):08b}'
         binary = ''.join(bin_list)
-        return (int(binary, 2) + i) % self.size 
+        def h1(k):
+            return (k % self.size) 
+        def h2(k, i):
+            return (i + (k % (self.size-2)))
+        def h(k, i):
+            return (h1(h2(k, i))) 
+        return h(int(binary, 2), i)
 
 
     def dehash_string(self, hash):
@@ -38,12 +44,14 @@ class HashTable:
 
 
     def insert(self, value, key):
-        for i in range(self.size): 
+        print(key)
+        i = 0
+        index = self.hash_string(key, i)
+        while self.table[index] is not None:
+            #print(i, index)
+            i += 1
             index = self.hash_string(key, i)
-            if self.table[index] is not None:
-                continue
-            self.table[index] = (key, value) 
-            break
+        self.table[index] = value
 
 
     def search(self, key):
@@ -69,6 +77,7 @@ if __name__ == "__main__":
     i = 1
     hash_table = HashTable(len(data))
     for line in data:
+        print(f'num:{i}')
         i+=1
         v, k = line.split(' ')
         hash_table.insert(v, k)

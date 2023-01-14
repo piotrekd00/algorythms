@@ -5,6 +5,7 @@
 
 typedef struct Node{
   int value;
+  int count;
   struct Node *left;
   struct Node *right;
 }Node;
@@ -30,6 +31,7 @@ Node *new_node(int data){
     printf("Error insert\n");
   }
   n_node->value = data;
+  n_node->count = 1;
   n_node->left = NULL;
   n_node->right = NULL;
   return n_node;
@@ -41,12 +43,16 @@ void insert_node(BST *tree, Node **root, int data) {
       tree->count++;
       return;
   }
-  if (data <= (*root)->value) {
+  if (data == (*root)->value) {
+      (*root)->count++;
+      return;
+  } else if (data <= (*root)->value) {
       insert_node(tree, &(*root)->left, data);
   } else {
       insert_node(tree, &(*root)->right, data);
   }
 }
+
 
 
 Node *successor(Node *node) {
@@ -67,23 +73,29 @@ Node *delete_node(BST *tree, Node *root, int data) {
   } else if (data > root->value) {
     root->right = delete_node(tree, root->right, data);
   } else {
-    if (root->left == NULL) {
-      Node *temp = root->right;
-      free(root);
-      tree->count--;
-      return temp;
-    } else if (root->right == NULL) {
-      Node *temp = root->left;
-      free(root);
-      tree->count--;
-      return temp;
+    if (root->count > 1){
+      root->count--;
+    } else {
+      if (root->left == NULL) {
+        Node *temp = root->right;
+        free(root);
+        tree->count--;
+        return temp;
+      } else if (root->right == NULL) {
+        Node *temp = root->left;
+        free(root);
+        tree->count--;
+        return temp;
+      }
+      Node *n_successor = successor(root->right);
+      root->value = n_successor->value;
+      root->count = n_successor->count;
+      root->right = delete_node(tree, root->right, n_successor->value);
     }
-    Node *n_successor = successor(root->right);
-    root->value = n_successor->value;
-    root->right = delete_node(tree, root->right, n_successor->value);
   }
   return root;
 }
+
 
 void print_inorder(BST *tree, Node *root) {
   static int count = 0;
@@ -91,6 +103,9 @@ void print_inorder(BST *tree, Node *root) {
   print_inorder(tree, root->left);
   count++;
   printf("%d", root->value);
+  if (root->count > 1) {
+    printf(":%d", root->count);
+  }
   if (count < tree->count) {
     printf(" ");
   } else {
@@ -106,6 +121,9 @@ void print_preorder(BST *tree, Node *root) {
   if (root == NULL) return;
   count++;
   printf("%d", root->value);
+  if (root->count > 1) {
+    printf(":%d", root->count);
+  }
   if (count < tree->count) {
     printf(" ");
   } else {
@@ -116,6 +134,7 @@ void print_preorder(BST *tree, Node *root) {
   print_preorder(tree, root->right);
 }
 
+
 void print_postorder(BST *tree, Node *root) {
   static int count = 0;
   if (root == NULL) return;
@@ -123,6 +142,9 @@ void print_postorder(BST *tree, Node *root) {
   print_postorder(tree, root->right);
   count++;
   printf("%d", root->value);
+  if (root->count > 1) {
+    printf(":%d", root->count);
+  }
   if (count < tree->count) {
     printf(" ");
   } else {
@@ -130,7 +152,6 @@ void print_postorder(BST *tree, Node *root) {
     count = 0;
   }
 }
-
 
 
 void search(Node *root, int data) {

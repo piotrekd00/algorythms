@@ -3,7 +3,7 @@ import urllib.request
 
 class HashTable:
     def __init__(self, size):
-        self.size = size
+        self.size = size * 2
         self.table = [None]*self.size 
 
 
@@ -15,7 +15,7 @@ class HashTable:
         def h1(k):
             return (k % self.size) 
         def h2(k):
-            return (((k + 2) % (self.size-2)))
+            return (((k + 2) % (self.size)))
         def h(k, i):
             return (h1(k) + (i * h2(k))) % self.size 
         return h(int(binary, 2), i)
@@ -51,9 +51,9 @@ class HashTable:
             #print(i, index)
             i += 1
             index = self.hash_string(key, i)
-            if i >= self.size:
+            if i == self.size - 1:
                 break
-        self.table[index] = value
+        self.table[index] = [key,value]
 
 
     def search(self, key):
@@ -83,3 +83,5 @@ if __name__ == "__main__":
         i+=1
         v, k = line.split(' ')
         hash_table.insert(v, k)
+    print(hash_table.table)
+    print(hash_table.search('Olszewski'))
